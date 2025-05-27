@@ -16,7 +16,14 @@ def create_app():
 
     @app.route("/api/streetscribe", methods=["GET", "POST"])
     def get_data():
-        if request.method == "POST":
+        if request.method == "GET":
+            with connection:
+                with connection.cursor() as cursor:
+                    cursor.execute(os.getenv("SELECT_REPORTS_QUERY"))
+                    column_names = [desc[0] for desc in cursor.description]
+                    rows = [dict(zip(column_names, row)) for row in cursor.fetchall()]
+            return jsonify({"status": "success", "rows": rows}), 201
+        elif request.method == "POST":
             data = request.form
             uploaded_image = request.files["image"]
             uploaded_image_url = upload_file_to_s3(uploaded_image)
@@ -30,7 +37,8 @@ def create_app():
                                    uploaded_latitude, uploaded_longitude, uploaded_issue_type))
                     inserted_data_id = cursor.fetchone()[0]
             return jsonify({"status": "success", "id": inserted_data_id}), 201
-    
+
+
     return app
 
 if __name__ == "__main__":
