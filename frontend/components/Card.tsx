@@ -12,17 +12,17 @@ const LeftContent = (props: { size: number }) => (
   <Avatar.Icon {...props} icon="folder" />
 );
 
-const card = () => (
+const card = ({ issueType, location, imageurl }: any) => (
   <Card style={styles.card} theme={{ roundness: 10 } as ThemeProp}>
     <View style={{ padding: 10 }}>
-      <Card.Cover source={{ uri: "https://picsum.photos/700" }} />
+      <Card.Cover source={{ uri: imageurl }} />
       <TouchableOpacity style={styles.locationCardButton}>
         <MaterialIcons name="location-pin" size={24} color="white" />
       </TouchableOpacity>
     </View>
     <Card.Content>
-      <Text variant="titleLarge">Type of Incident</Text>
-      <Text variant="bodyMedium">Location</Text>
+      <Text variant="titleLarge">{issueType}</Text>
+      <Text variant="bodyMedium">{location}</Text>
     </Card.Content>
     <Card.Actions>
       {/* <TouchableOpacity>

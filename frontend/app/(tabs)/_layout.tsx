@@ -60,14 +60,14 @@ export default function TabLayout() {
           tabBarShowLabel: false,
         }}
       />
-      <Tabs.Screen
+      {/* <Tabs.Screen
         name="profile"
         options={{
           title: "Profile",
           tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
           tabBarShowLabel: false,
         }}
-      />
+      /> */}
     </Tabs>
   );
 }

@@ -102,13 +102,16 @@ const UploadImageComponent = () => {
     formData.append("description", description);
     formData.append("location", location);
     formData.append("issueType", issueType);
-    console.log("Form data:", formData);
     console.log("Uploading to:", "http://localhost:3000/");
-    fetch("http://localhost:3000/ ", {
+    fetch(`localhost`, {
       method: "POST",
       body: formData,
     });
     console.log("Image uploaded successfully");
+    setDescription("");
+    setLocation("");
+    setIssueType("pothole");
+    setCurrentImage(null);
   };
 
   return (
