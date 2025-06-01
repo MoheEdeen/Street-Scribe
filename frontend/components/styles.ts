@@ -2,130 +2,176 @@ import { StyleSheet, Platform } from "react-native";
 
 export const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: "space-between",
-    alignItems: "center",
-    backgroundColor: "#fff",
     paddingHorizontal: 40,
     paddingVertical: 20,
+    alignItems: "center",
+    backgroundColor: "#ffffff",
   },
+
   imageContainer: {
     alignItems: "center",
     justifyContent: "center",
     width: "100%",
     aspectRatio: 1,
-    maxHeight: "40%",
+    borderRadius: 16,
+    backgroundColor: "#f9fafb",
+    borderStyle: "dashed",
+    borderWidth: 2,
+    borderColor: "#e5e7eb",
+    marginBottom: 24,
   },
+
   image: {
-    width: "100%",
-    height: "100%",
-    resizeMode: "contain",
-    borderRadius: 8,
+    width: 350,
+    height: 350,
+    resizeMode: "cover",
+    borderRadius: 16,
   },
+
   deleteButton: {
     position: "absolute",
-    top: 10,
-    right: 10,
-    backgroundColor: "rgba(255, 0, 0, 0.7)",
-    borderRadius: 20,
+    top: 12,
+    right: 12,
+    backgroundColor: "#ef4444",
+    borderRadius: 24,
     padding: 8,
-    zIndex: 10,
   },
-  noImageContainer: {
-    width: "100%",
-    aspectRatio: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#f0f0f0",
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: "#ddd",
-    borderStyle: "dashed",
-  },
+
   noImageText: {
-    color: "#999",
+    color: "#6b7280",
     fontSize: 16,
+    fontWeight: "500",
   },
+
   formContainer: {
     width: "100%",
-    alignItems: "center",
-    marginTop: 20,
+    marginBottom: 20,
+    gap: 16,
   },
+
   input: {
     width: "100%",
     height: 50,
-    borderWidth: 1,
-    borderColor: "#ddd",
-    borderRadius: 8,
-    marginBottom: 12,
-    paddingHorizontal: 15,
+    borderBottomWidth: 1,
+    borderColor: "#d1d5db",
     fontSize: 16,
-    backgroundColor: "#f9f9f9",
+    paddingHorizontal: 4,
+    backgroundColor: "transparent",
+    color: "#111827",
   },
+
   latlong: {
     flexDirection: "row",
     justifyContent: "space-between",
-    width: "100%",
-    gap: 10,
-    marginBottom: 12,
+    gap: 12,
   },
+
   halfWidthInput: {
     flex: 1,
   },
+
   pickerContainer: {
     width: "100%",
-    height: 50,
+    borderBottomWidth: 1,
+    borderColor: "#d1d5db",
     justifyContent: "center",
-    marginBottom: 20,
-  },
-  picker: {
-    width: 300,
     height: 50,
-    color: "#333",
   },
+
+  picker: {
+    width: "100%",
+    height: 50,
+    color: "#111827",
+  },
+
   buttonContainer: {
     width: "100%",
-    marginTop: 20,
+    marginTop: 24,
+    gap: 12,
   },
+
   buttonRow: {
     flexDirection: "row",
     justifyContent: "space-between",
-    width: "100%",
-    marginBottom: 10,
+    gap: 12,
   },
+
   button: {
     flex: 1,
-    height: 56,
+    height: 50,
+    borderRadius: 12,
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 12,
-    marginHorizontal: 5,
-    ...Platform.select({
-      ios: {
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 3 },
-        shadowOpacity: 0.15,
-        shadowRadius: 8,
-      },
-      android: {
-        elevation: 4,
-      },
-    }),
   },
   galleryButton: {
-    backgroundColor: "#02ccb4",
+    backgroundColor: "#374151",
   },
+
   cameraButton: {
-    backgroundColor: "#02ccb4",
+    backgroundColor: "#1f2937",
   },
+
   uploadButton: {
-    backgroundColor: "#02cc56",
-    marginTop: 10,
+    backgroundColor: "#111827",
   },
+
   buttonText: {
-    color: "white",
-    fontSize: 16,
+    color: "#ffffff",
+    fontSize: 15,
     fontWeight: "600",
-    letterSpacing: 0.5,
+  },
+
+  dropdown: {
+    marginTop: 16,
+    height: 50,
+    width: "100%",
+  },
+
+  item: {
+    padding: 16,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+
+  textItem: {
+    flex: 1,
+    fontSize: 16,
+    color: "#111827",
+  },
+
+  placeholderStyle: {
+    fontSize: 16,
+    color: "#9ca3af",
+  },
+
+  selectedTextStyle: {
+    fontSize: 16,
+    color: "#111827",
+  },
+
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
+    color: "#1f2937",
+  },
+
+  iconStyle: {
+    width: 20,
+    height: 20,
+  },
+  cardButton: {
+    backgroundColor: "#111827",
+  },
+  card: {
+    backgroundColor: "#ffffff",
+  },
+  locationCardButton: {
+    position: "absolute",
+    top: 12,
+    right: 12,
+    backgroundColor: "#3396ff",
+    borderRadius: 24,
+    padding: 8,
   },
 });

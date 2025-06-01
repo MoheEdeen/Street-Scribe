@@ -1,20 +1,38 @@
 import React from "react";
-import { View } from "react-native";
-import { Picker } from "@react-native-picker/picker";
+import { View, Text } from "react-native";
 import { TextInput } from "react-native-paper";
 import { styles } from "./styles";
+import { Dropdown } from "react-native-element-dropdown";
+
+const data = [
+  { label: "Pothole", value: "pothole" },
+  { label: "Broken Streetlight", value: "streetlight" },
+  { label: "Graffiti", value: "graffiti" },
+  { label: "Trash Overflow", value: "trash" },
+  { label: "Blocked Sidewalk", value: "sidewalk" },
+  { label: "Damaged Signage", value: "sign" },
+  { label: "Water Leak", value: "water" },
+  { label: "Noise Complaint", value: "noise" },
+  { label: "Vandalism", value: "vandalism" },
+  { label: "Other", value: "other" },
+];
 
 const FormInputs = ({
   description,
   setDescription,
-  longitude,
-  latitude,
-  setLatitude,
-  setLongitude,
+  location,
+  setLocation,
   issueType,
   setIssueType,
-  pickerRef,
 }: any) => {
+  const renderItem = (item: any) => {
+    return (
+      <View style={styles.item}>
+        <Text style={styles.textItem}>{item.label}</Text>
+        {item.value === issueType && <Text>✓</Text>}
+      </View>
+    );
+  };
   return (
     <View style={styles.formContainer}>
       <TextInput
@@ -24,43 +42,33 @@ const FormInputs = ({
         onChangeText={setDescription}
         placeholderTextColor="#999"
       />
-      <View style={styles.latlong}>
-        <TextInput
-          keyboardType="numeric"
-          style={[styles.input, styles.halfWidthInput]}
-          placeholder="Enter Latitude"
-          value={latitude}
-          onChangeText={setLatitude}
-          placeholderTextColor="#999"
-        />
-        <TextInput
-          keyboardType="numeric"
-          style={[styles.input, styles.halfWidthInput]}
-          placeholder="Enter Longitude"
-          value={longitude}
-          onChangeText={setLongitude}
-          placeholderTextColor="#999"
-        />
-      </View>
+      <TextInput
+        style={styles.input}
+        placeholder="Enter Location"
+        value={location}
+        onChangeText={setLocation}
+        placeholderTextColor="#999"
+      />
       <View style={styles.pickerContainer}>
-        <Picker
-          ref={pickerRef}
-          selectedValue={issueType}
-          onValueChange={(itemValue) => setIssueType(itemValue)}
-          style={styles.picker}
-          dropdownIconColor="#333"
-        >
-          <Picker.Item label="Pothole" value="pothole" />
-          <Picker.Item label="Broken Streetlight" value="streetlight" />
-          <Picker.Item label="Graffiti" value="graffiti" />
-          <Picker.Item label="Trash Overflow" value="trash" />
-          <Picker.Item label="Blocked Sidewalk" value="sidewalk" />
-          <Picker.Item label="Damaged Signage" value="sign" />
-          <Picker.Item label="Water Leak" value="water" />
-          <Picker.Item label="Noise Complaint" value="noise" />
-          <Picker.Item label="Vandalism" value="vandalism" />
-          <Picker.Item label="Other" value="other" />
-        </Picker>
+        <Dropdown
+          style={styles.dropdown}
+          placeholderStyle={styles.placeholderStyle}
+          selectedTextStyle={styles.selectedTextStyle}
+          inputSearchStyle={styles.inputSearchStyle}
+          iconStyle={styles.iconStyle}
+          data={data}
+          search
+          maxHeight={300}
+          labelField="label"
+          valueField="value"
+          placeholder="Select item"
+          searchPlaceholder="Search..."
+          value={issueType}
+          onChange={(item) => {
+            setIssueType(item.value);
+          }}
+          renderItem={renderItem}
+        />
       </View>
     </View>
   );

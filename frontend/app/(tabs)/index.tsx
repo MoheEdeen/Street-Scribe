@@ -1,29 +1,32 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, ScrollView } from "react-native";
 
-import UploadImage from "@/components/UploadImage";
+import Card from "@/components/Card";
 import { View } from "@/components/Themed";
 
 export default function TabOneScreen() {
   return (
     <View style={styles.container}>
-      <UploadImage />
+      <ScrollView style={{ flexGrow: 1 }}>
+        <View style={styles.separator}>
+          <Card />
+          <Card />
+          <Card />
+        </View>
+      </ScrollView>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: "transparent",
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
+    marginHorizontal: 20,
   },
   separator: {
-    marginVertical: 30,
-    height: 1,
-    width: "80%",
+    justifyContent: "space-between",
+    backgroundColor: "transparent",
+    marginVertical: 20,
+    gap: 50,
   },
 });

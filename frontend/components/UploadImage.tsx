@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { View, SafeAreaView, ScrollView } from "react-native";
 import * as FileSystem from "expo-file-system";
 import * as ImagePicker from "expo-image-picker";
-import { Picker } from "@react-native-picker/picker";
 import ImageDisplay from "./ImageDisplay";
 import FormInputs from "./FormInputs";
 import ButtonGroup from "./ButtonGroup";
@@ -21,9 +20,7 @@ const UploadImageComponent = () => {
   const [currentImage, setCurrentImage] = useState<string | null>(null);
   const [issueType, setIssueType] = useState<string>("pothole");
   const [description, setDescription] = useState("");
-  const [latitude, setLatitude] = useState("");
-  const [longitude, setLongitude] = useState("");
-  const pickerRef = useRef<any>(null);
+  const [location, setLocation] = useState("");
 
   useEffect(() => {
     loadImage();
@@ -39,18 +36,22 @@ const UploadImageComponent = () => {
   };
 
   const selectImage = async (useLibrary: boolean) => {
+    let result: ImagePicker.ImagePickerResult;
     const options: ImagePicker.ImagePickerOptions = {
       mediaTypes: "images",
       allowsEditing: true,
       aspect: [4, 3],
       quality: 0.75,
     };
-    const result = useLibrary
-      ? await ImagePicker.launchImageLibraryAsync(options)
-      : await ImagePicker.launchCameraAsync(options);
-
+    if (useLibrary) {
+      result = await ImagePicker.launchImageLibraryAsync(options);
+    } else {
+      await ImagePicker.requestCameraPermissionsAsync();
+      result = await ImagePicker.launchCameraAsync(options);
+    }
     if (!result.canceled) {
-      saveImage(result.assets[0].uri);
+      const { uri } = await saveImage(result.assets[0].uri);
+      setCurrentImage(uri);
     }
   };
 
@@ -81,6 +82,7 @@ const UploadImageComponent = () => {
   };
 
   const uploadImage = async () => {
+    console.log("Uploading image...");
     if (!currentImage) return;
 
     const filename = currentImage.split("/").pop() || "";
@@ -96,22 +98,34 @@ const UploadImageComponent = () => {
       name: filename,
       type: mimeType,
     } as any);
+
+    formData.append("description", description);
+    formData.append("location", location);
+    formData.append("issueType", issueType);
+    console.log("Form data:", formData);
+    console.log("Uploading to:", "http://localhost:3000/");
+    fetch("http://localhost:3000/ ", {
+      method: "POST",
+      body: formData,
+    });
+    console.log("Image uploaded successfully");
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: "center" }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
+      <ScrollView
+        contentContainerStyle={styles.container}
+        scrollEnabled={false}
+        keyboardShouldPersistTaps="handled"
+      >
         <ImageDisplay currentImage={currentImage} onDelete={deleteImage} />
         <FormInputs
           description={description}
           setDescription={setDescription}
-          latitude={latitude}
-          setLatitude={setLatitude}
-          longitude={longitude}
-          setLongitude={setLongitude}
+          location={location}
+          setLocation={setLocation}
           issueType={issueType}
           setIssueType={setIssueType}
-          pickerRef={pickerRef}
         />
         <ButtonGroup onSelectImage={selectImage} onUpload={uploadImage} />
       </ScrollView>

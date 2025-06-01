@@ -32,13 +32,16 @@ def create_app():
             uploaded_image = request.files["image"]
             uploaded_image_url = upload_file_to_s3(uploaded_image)
             uploaded_description = data["description"]
-            uploaded_latitude = data["latitude"]
-            uploaded_longitude = data["longitude"]
+            uploaded_location = data["location"]
             uploaded_issue_type = data["issueType"]
+            print(f"Image URL: {uploaded_image_url}")
+            print(f"Description: {uploaded_description}")
+            print(f"Location: {uploaded_location}")
+            print(f"Issue Type: {uploaded_issue_type}")
             with connection:
                 with connection.cursor() as cursor:
                     cursor.execute(os.getenv("INSERT_QUERY"), (uploaded_image_url, uploaded_description,
-                                   uploaded_latitude, uploaded_longitude, uploaded_issue_type))
+                                   uploaded_location, uploaded_issue_type))
                     inserted_data_id = cursor.fetchone()[0]
             return jsonify({"status": "success", "id": inserted_data_id}), 201
 

@@ -20,7 +20,7 @@ const ImageDisplay = ({
           </TouchableOpacity>
         </View>
       ) : (
-        <View style={styles.noImageContainer}>
+        <View>
           <Text style={styles.noImageText}>No image selected</Text>
         </View>
       )}

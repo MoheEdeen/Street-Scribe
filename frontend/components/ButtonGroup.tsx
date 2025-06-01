@@ -23,7 +23,7 @@ const ButtonGroup = ({ onSelectImage, onUpload }: any) => {
         style={[styles.button, styles.uploadButton]}
         onPress={onUpload}
       >
-        <Text style={styles.buttonText}>Upload</Text>
+        <Text style={styles.buttonText}>Post</Text>
       </TouchableOpacity>
     </View>
   );
