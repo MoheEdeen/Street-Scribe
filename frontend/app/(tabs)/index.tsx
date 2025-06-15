@@ -8,6 +8,7 @@ interface Issue {
   issueType: string;
   location: string;
   imageUrl: string;
+  description: string;
 }
 
 export default function TabOneScreen() {
@@ -24,6 +25,7 @@ export default function TabOneScreen() {
           issueType: item.issue_type || "Unknown Type",
           location: item.location || "Unknown Location",
           imageUrl: item.image_url || "https://picsum.photos/700",
+          description: item.description || "Description",
         }));
         setData(new_data);
       })
@@ -46,16 +48,22 @@ export default function TabOneScreen() {
         issueType: "Graffiti",
         location: "2nd St and Elm St",
         imageUrl: "https://picsum.photos/700",
+        description:
+          "Vandalism on the side of a building with spray paint tags",
       },
       {
         issueType: "Broken Streetlight",
         location: "3rd St and Pine St",
         imageUrl: "https://picsum.photos/700",
+        description:
+          "Street light pole is damaged and not functioning, creating safety hazard",
       },
       {
         issueType: "Fallen Tree",
         location: "4th St and Oak St",
         imageUrl: "https://picsum.photos/700",
+        description:
+          "Large tree has fallen across the sidewalk blocking pedestrian access",
       },
     ];
     setData(dummy);
@@ -76,28 +84,24 @@ export default function TabOneScreen() {
           borderBottomWidth: 1.5,
         }}
       />
-      <ScrollView
-        style={{ flexGrow: 1 }}
+      <FlatList
+        contentContainerStyle={{ flexGrow: 1, backgroundColor: "transparent" }}
+        data={filteredData}
+        keyExtractor={(_, index) => index.toString()}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={fetchData} />
         }
-      >
-        <View style={{ backgroundColor: "transparent" }}>
-          <FlatList
-            data={filteredData}
-            keyExtractor={(_, index) => index.toString()}
-            renderItem={({ item }) => (
-              <View style={styles.separator}>
-                <Card
-                  issueType={item.issueType}
-                  location={item.location}
-                  imageUrl={item.imageUrl}
-                />
-              </View>
-            )}
-          />
-        </View>
-      </ScrollView>
+        renderItem={({ item }) => (
+          <View style={styles.separator}>
+            <Card
+              issueType={item.issueType}
+              location={item.location}
+              imageurl={item.imageUrl}
+              description={item.description}
+            />
+          </View>
+        )}
+      />
     </View>
   );
 }

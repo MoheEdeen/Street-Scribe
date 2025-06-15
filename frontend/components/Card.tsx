@@ -1,5 +1,11 @@
 import * as React from "react";
-import { View, TouchableOpacity, useWindowDimensions } from "react-native";
+import {
+  Alert,
+  Linking,
+  View,
+  TouchableOpacity,
+  useWindowDimensions,
+} from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Portal, Modal, Button, Card, Text } from "react-native-paper";
 // import { IconSource } from "react-native-paper/lib/typescript/components/Icon";
@@ -12,9 +18,32 @@ import { styles } from "./styles";
 //   <Avatar.Icon {...props} icon="folder" />
 // );
 
-const card = ({ issueType, location, imageurl }: any) => {
+const card = ({ issueType, location, imageurl, description }: any) => {
   const [visible, setVisible] = React.useState(false);
   const showModal = () => setVisible(true);
+
+  const toGoogleMaps = () => {
+    const encodedAddress = encodeURIComponent(location);
+    const url = `https://www.google.com/maps/search/?api=1&query=${encodedAddress}`;
+    Alert.alert("Open in Maps", "Do you want to open this location in Maps?", [
+      {
+        text: "Cancel",
+        style: "cancel",
+      },
+      {
+        text: "Open",
+        onPress: async () => {
+          const supported = await Linking.canOpenURL(url);
+          if (supported) {
+            await Linking.openURL(url);
+          } else {
+            Alert.alert("Error", "Maps is not supported on this device");
+          }
+        },
+      },
+    ]);
+  };
+
   const hideModal = () => setVisible(false);
   const { width, height } = useWindowDimensions();
   return (
@@ -51,16 +80,19 @@ const card = ({ issueType, location, imageurl }: any) => {
               {issueType} Incident
             </Text>
 
-            <Text
-              style={{
-                fontSize: 16,
-                color: "#555",
-                textAlign: "center",
-                marginBottom: 16,
-              }}
-            >
-              {location}
-            </Text>
+            <TouchableOpacity onPress={toGoogleMaps}>
+              <Text
+                style={{
+                  textDecorationLine: "underline",
+                  fontSize: 16,
+                  color: "#000",
+                  textAlign: "center",
+                  marginBottom: 16,
+                }}
+              >
+                {location}
+              </Text>
+            </TouchableOpacity>
 
             <View
               style={{ width: "100%", borderRadius: 12, overflow: "hidden" }}
@@ -74,6 +106,20 @@ const card = ({ issueType, location, imageurl }: any) => {
                 resizeMode="cover"
               />
             </View>
+            <View>
+              <Text
+                style={{
+                  fontSize: 16,
+                  lineHeight: 22,
+                  color: "#333",
+                  textAlign: "left",
+                  marginTop: 16,
+                  paddingHorizontal: 4,
+                }}
+              >
+                {description}
+              </Text>
+            </View>
           </View>
         </Modal>
       </Portal>
@@ -81,7 +127,12 @@ const card = ({ issueType, location, imageurl }: any) => {
         <View style={{ padding: 10 }}>
           <Card.Cover source={{ uri: imageurl }} />
           <TouchableOpacity style={styles.locationCardButton}>
-            <MaterialIcons name="location-pin" size={24} color="white" />
+            <MaterialIcons
+              onPress={toGoogleMaps}
+              name="location-pin"
+              size={24}
+              color="white"
+            />
           </TouchableOpacity>
         </View>
         <Card.Content>
