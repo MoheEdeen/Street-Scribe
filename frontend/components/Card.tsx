@@ -8,19 +8,22 @@ import {
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Portal, Modal, Button, Card, Text } from "react-native-paper";
-// import { IconSource } from "react-native-paper/lib/typescript/components/Icon";
 import { ThemeProp } from "react-native-paper/lib/typescript/types";
-// import { ViewProps } from "react-native/Libraries/Components/View/ViewPropTypes";
-// import { ViewStyle } from "react-native/Libraries/StyleSheet/StyleSheetTypes";
 import { styles } from "./styles";
 
-// const LeftContent = (props: { size: number }) => (
-//   <Avatar.Icon {...props} icon="folder" />
-// );
-
-const card = ({ issueType, location, imageurl, description }: any) => {
+const card = ({
+  issueType,
+  location,
+  imageurl,
+  description,
+  upvoteCount,
+  hasUpvoted,
+  onUpvoteToggle,
+}: any) => {
   const [visible, setVisible] = React.useState(false);
   const showModal = () => setVisible(true);
+  const hideModal = () => setVisible(false);
+  const { width, height } = useWindowDimensions();
 
   const toGoogleMaps = () => {
     const encodedAddress = encodeURIComponent(location);
@@ -44,8 +47,6 @@ const card = ({ issueType, location, imageurl, description }: any) => {
     ]);
   };
 
-  const hideModal = () => setVisible(false);
-  const { width, height } = useWindowDimensions();
   return (
     <>
       <Portal>
@@ -123,6 +124,7 @@ const card = ({ issueType, location, imageurl, description }: any) => {
           </View>
         </Modal>
       </Portal>
+
       <Card style={styles.card} theme={{ roundness: 10 } as ThemeProp}>
         <View style={{ padding: 10 }}>
           <Card.Cover source={{ uri: imageurl }} />
@@ -135,11 +137,27 @@ const card = ({ issueType, location, imageurl, description }: any) => {
             />
           </TouchableOpacity>
         </View>
+
         <Card.Content>
           <Text variant="titleLarge">{issueType}</Text>
           <Text variant="bodyMedium">{location}</Text>
         </Card.Content>
-        <Card.Actions>
+
+        <Card.Actions
+          style={{ justifyContent: "space-between", width: "100%" }}
+        >
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <TouchableOpacity onPress={onUpvoteToggle}>
+              <MaterialIcons
+                name={hasUpvoted ? "thumb-up" : "thumb-up-off-alt"}
+                size={24}
+                color={hasUpvoted ? "#1976D2" : "#aaa"}
+                style={{ marginRight: 8 }}
+              />
+            </TouchableOpacity>
+            <Text>{upvoteCount}</Text>
+          </View>
+
           <Button
             textColor={"#ffff"}
             style={styles.cardButton}

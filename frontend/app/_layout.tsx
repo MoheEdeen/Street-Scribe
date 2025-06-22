@@ -8,8 +8,10 @@ import { useFonts } from "expo-font";
 import { Portal } from "react-native-paper";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "react-native-reanimated";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import uuid from "react-native-uuid";
 
 import { useColorScheme } from "@/components/useColorScheme";
 
@@ -27,6 +29,7 @@ export const unstable_settings = {
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+  const [deviceId, setDeviceId] = useState<string | null>(null);
   const [loaded, error] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
     ...FontAwesome.font,
@@ -38,9 +41,23 @@ export default function RootLayout() {
   }, [error]);
 
   useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
+    const initDeviceId = async () => {
+      if (loaded) {
+        await SplashScreen.hideAsync();
+        try {
+          const device_id = await AsyncStorage.getItem("@device_id");
+          setDeviceId(device_id);
+          if (device_id == null) {
+            const new_device_id = uuid.v4() as string;
+            setDeviceId(new_device_id);
+            await AsyncStorage.setItem("@device_id", new_device_id);
+          }
+        } catch (e) {
+          console.error("device id issue:", e);
+        }
+      }
+    };
+    initDeviceId();
   }, [loaded]);
 
   if (!loaded) {

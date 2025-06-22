@@ -103,7 +103,7 @@ const UploadImageComponent = () => {
     formData.append("location", location);
     formData.append("issueType", issueType);
     console.log("Uploading to:", "http://localhost:3000/");
-    fetch(`localhost`, {
+    fetch(`http://localhost/api/streetscribe`, {
       method: "POST",
       body: formData,
     });
